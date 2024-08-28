@@ -22,6 +22,8 @@ from fastapi import Query
 
 @app.get("/analyse-me")
 async def analyse_me(username: str):
+    
+    username = username.lower()
 
     # check if analysis already exists
     if not db.analysis_exists(username):
@@ -32,6 +34,9 @@ async def analyse_me(username: str):
 
             # convert the profile to our schema, and store in db
             schema_mapper.map_profile(username, scraped_info['profile_scrape'])
+
+        print("captioning")
+        processor.caption_images(username)
 
         # generate the analysis of the profile
         analysis_result = analyser.analyse(username)
