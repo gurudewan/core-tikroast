@@ -5,7 +5,7 @@ app = FastAPI()
 
 from app import consts
 
-# Enable CORS based on environment
+""" # Enable CORS based on environment
 if consts.ENV == "PROD":
     allow_origins=["*"],  # Allow all origins
 else:
@@ -18,4 +18,4 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+) """
