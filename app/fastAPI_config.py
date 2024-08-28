@@ -7,14 +7,10 @@ from app import consts
 
 # Enable CORS based on environment
 if consts.ENV == "PROD":
-    allow_origins = ["https://front-tikroast.vercel.app"]
+    allow_origins=["*"],  # Allow all origins
 else:
-    allow_origins = [
-        "http://localhost",
-        "http://127.0.0.1",
-        "http://localhost:3000",
-        "https://front-tikroast.vercel.app",
-    ]
+    allow_origins=["*"],  # Allow all origins
+
 
 app.add_middleware(
     CORSMiddleware,
