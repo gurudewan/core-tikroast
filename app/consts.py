@@ -30,3 +30,5 @@ REPLICATE_API_TOKEN = "r8_JHW0PVBjxt26vIc4s7yqeFwKLzbtBr20ddtc0"
 # =========== NEW ===========
 
 # =================================
+
+ENV = "PROD"
