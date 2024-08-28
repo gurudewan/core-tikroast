@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-import consts
+from app import consts
 
 # Enable CORS based on environment
 if consts.ENV == "PROD":
