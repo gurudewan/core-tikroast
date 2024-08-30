@@ -23,8 +23,6 @@ from fastapi import Query
 @app.get("/analyse-me")
 async def analyse_me(username: str):
     
-    username = username.lower()
-
     # check if analysis already exists
     if not db.analysis_exists(username):
         # ===== begin new analysis of profile ====
@@ -50,10 +48,31 @@ async def analyse_me(username: str):
 
     return profile
 
+import os
+import requests
+
+
 @app.get("/get-profiles")
 async def get_profiles(usernames: str = Query(...)):
     pprint(usernames)
     usernames_list = usernames.split(',')
     profiles = db.get_profiles_by_usernames(usernames_list)
     pprint(profiles)
+    
+    os.makedirs('demo-profiles', exist_ok=True)
+    
+    for profile in profiles:
+        avatar_url = profile['profile']['avatar']
+        response = requests.get(avatar_url)
+        print(f"Downloading {avatar_url} - Status Code: {response.status_code}")  # Debug print
+        if response.status_code == 200:
+            file_path = f"demo-profiles/{profile['username']}.jpg"
+            with open(file_path, 'wb') as f:
+                f.write(response.content)
+            print(f"Saved {file_path}")  # Debug print
+        else:
+            print(f"Failed to download {avatar_url}")  # Debug print
+    
     return profiles
+
+
