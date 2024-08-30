@@ -48,9 +48,6 @@ async def analyse_me(username: str):
 
     return profile
 
-import os
-import requests
-
 
 @app.get("/get-profiles")
 async def get_profiles(usernames: str = Query(...)):
