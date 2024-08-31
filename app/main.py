@@ -1,4 +1,4 @@
-
+import logging
 from app.fastAPI_config import app # the fastAPI app
 
 import app.analyser as analyser
@@ -19,6 +19,8 @@ from app.database.databaser import db
 from typing import List
 from fastapi import Query
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 @app.get("/analyse-me")
 async def analyse_me(username: str):
@@ -29,31 +31,31 @@ async def analyse_me(username: str):
         if not db.scraping_exists(username):
             # scrape the profile on tik tok
 
-            print("starting scrape for " + username)
+            logging.info("starting scrape for " + username)
             scraped_info = tiktok_scraper.do_scrape(username)
-            print("finished scrape for " + username)
+            logging.info("finished scrape for " + username)
             # convert the profile to our schema, and store in db
             schema_mapper.map_profile(username, scraped_info['profile_scrape'])
-            print("finished schema map for " + username)
+            logging.info("finished schema map for " + username)
         
-        print("starting captioning")
+        #logging.info("starting captioning")
         
-        processor.caption_images(username)
+        #processor.caption_images(username)
         
-        print("finished captioning")
+        #logging.info("finished captioning")
 
-        print("starting analysis")
+        logging.info("starting analysis")
         # generate the analysis of the profile
         analysis_result = analyser.analyse(username)
-        print("finished analysis for " + username)
+        logging.info("finished analysis for " + username)
         # place the analysis result into db
         db.store_analysis(username, analysis_result)
     
-    print("finished storing")
+    logging.info("finished storing")
     
     profile = db.get_profile_by_username(username)
-    print("returning")
-    print(profile)
+    logging.info("returning")
+    logging.info(profile)
 
     return profile
 
@@ -65,5 +67,3 @@ async def get_profiles(usernames: str = Query(...)):
     profiles = db.get_profiles_by_usernames(usernames_list)
 
     return profiles
-
-
