@@ -28,22 +28,31 @@ async def analyse_me(username: str):
         # ===== begin new analysis of profile ====
         if not db.scraping_exists(username):
             # scrape the profile on tik tok
-            scraped_info = tiktok_scraper.do_scrape(username)
 
+            print("starting scrape for " + username)
+            scraped_info = tiktok_scraper.do_scrape(username)
+            print("finished scrape for " + username)
             # convert the profile to our schema, and store in db
             schema_mapper.map_profile(username, scraped_info['profile_scrape'])
-
-        print("captioning")
+            print("finished schema map for " + username)
+        
+        print("starting captioning")
+        
         processor.caption_images(username)
+        
+        print("finished captioning")
 
+        print("starting analysis")
         # generate the analysis of the profile
         analysis_result = analyser.analyse(username)
-
+        print("finished analysis for " + username)
         # place the analysis result into db
         db.store_analysis(username, analysis_result)
     
+    print("finished storing")
+    
     profile = db.get_profile_by_username(username)
-
+    print("returning")
     print(profile)
 
     return profile
