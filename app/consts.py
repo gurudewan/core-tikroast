@@ -1,10 +1,8 @@
-MONGO_HOST=""
-
 MONGO_USER="code"
 MONGO_PW="Y3RLv9tSyjeyc5h7"
 MONGO_DB_STRING="mongodb+srv://code:Y3RLv9tSyjeyc5h7@db-cluster-1.opzsm.mongodb.net/?retryWrites=true&w=majority&appName=db-cluster-1"
 
-# GPT-3.5 consts
+# GPT consts
 AZURE_OPENAI_KEY = "9882198122fe4bbf8bc6f96023dbefb2"
 AZURE_OPENAI_DEPLOYMENT = "gpt-4o"
 AZURE_OPENAI_ENDPOINT = "https://openai-dev-x-2-sweded.openai.azure.com/"
