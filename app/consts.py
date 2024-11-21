@@ -1,6 +1,7 @@
 MONGO_USER="code"
 MONGO_PW="Y3RLv9tSyjeyc5h7"
-MONGO_DB_STRING="mongodb+srv://code:Y3RLv9tSyjeyc5h7@db-cluster-1.opzsm.mongodb.net/?retryWrites=true&w=majority&appName=db-cluster-1"
+#MONGO_DB_STRING="mongodb+srv://code:Y3RLv9tSyjeyc5h7@db-cluster-1.opzsm.mongodb.net/?retryWrites=true&w=majority&appName=db-cluster-1"
+MONGO_DB_STRING="mongodb+srv://core-tikroast-code:xIs8xmr68ScsN24U@tikroast-prod.duqso.mongodb.net/?retryWrites=true&w=majority&appName=tikroast-prod"
 
 # GPT consts
 AZURE_OPENAI_KEY = "9882198122fe4bbf8bc6f96023dbefb2"

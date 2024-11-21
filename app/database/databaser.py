@@ -68,8 +68,9 @@ class Database:
 
     def analysis_exists(self, username):
         users_collection = self.db['users']
-        return users_collection.find_one({'username': username, 'analysis': {'$exists': True}}) is not None
-
+        analysis = users_collection.find_one({'username': username, 'analysis': {'$exists': True}})
+        return analysis is not None and 'name' in analysis['analysis']
+    
     def scraping_exists(self, username):
         users_collection = self.db['users']
         user_data = users_collection.find_one({'username': username})

@@ -24,40 +24,27 @@ logging.basicConfig(level=logging.INFO)
 
 @app.get("/analyse-me")
 async def analyse_me(username: str):
-    
-    # check if analysis already exists
-    if not db.analysis_exists(username):
-        # ===== begin new analysis of profile ====
-        if not db.scraping_exists(username):
-            # scrape the profile on tik tok
+    try:
+        # check if analysis already exists
+        if not db.analysis_exists(username):
+            # ===== begin new analysis of profile ====
+            if not db.scraping_exists(username):
+                # scrape the profile on tik tok
+                scraped_info = tiktok_scraper.do_scrape(username)
+                # convert the profile to our schema, and store in db
+                schema_mapper.map_profile(username, scraped_info['profile_scrape'])
 
-            logging.info("starting scrape for " + username)
-            scraped_info = tiktok_scraper.do_scrape(username)
-            logging.info("finished scrape for " + username)
-            # convert the profile to our schema, and store in db
-            schema_mapper.map_profile(username, scraped_info['profile_scrape'])
-            logging.info("finished schema map for " + username)
+            # generate the analysis of the profile
+            analysis_result = analyser.analyse(username)
+            # place the analysis result into db
+            db.store_analysis(username, analysis_result)
         
-        #logging.info("starting captioning")
-        
-        #processor.caption_images(username)
-        
-        #logging.info("finished captioning")
+        profile = db.get_profile_by_username(username)
+        return profile
 
-        logging.info("starting analysis")
-        # generate the analysis of the profile
-        analysis_result = analyser.analyse(username)
-        logging.info("finished analysis for " + username)
-        # place the analysis result into db
-        db.store_analysis(username, analysis_result)
-    
-    logging.info("finished storing")
-    
-    profile = db.get_profile_by_username(username)
-    logging.info("returning")
-    logging.info(profile)
-
-    return profile
+    except Exception as e:
+        logging.error(f"Error during analysis: {e}")
+        return {"error": "An error occurred during analysis. Please try again later."}
 
 
 @app.get("/get-profiles")
