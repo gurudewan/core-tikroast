@@ -1,17 +1,17 @@
 from app.prompts import get_full_analysis_prompt
 from app import openai_client
 from app.database.databaser import db
-
+import asyncio
 import app.json_cleaner as json_cleaner
 
-def analyse(username):
 
-    profile = db.get_profile_by_username(username)
+async def analyse(username: str) -> str:
+    profile = db.get_profile_by_username(username)  # Assuming this is an async function
     # Prepare the prompt with user data
     prompt = get_full_analysis_prompt(profile)
     
     # Call the generate_output function from openai_client
-    response = openai_client.gpt4o_text(prompt)
+    response = await openai_client.gpt4o_text(prompt)
 
     result = json_cleaner.clean(response)
     
@@ -20,6 +20,11 @@ def analyse(username):
 
 if __name__ == "__main__":
     # Example user data for testing
-    user_data = {"name": "John Doe", "age": 30, "bio": "Software developer..."}
-    result = analyse(user_data)
-    print(result)
+    username = "John_Doe" # As username should be str, not dict.
+    
+    async def main():
+        result = await analyse(username)
+        print(result)
+
+    # Run the main coroutine
+    asyncio.run(main())
