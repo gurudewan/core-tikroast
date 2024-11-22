@@ -31,17 +31,17 @@ async def analyse_me(username: str):
     try:
         logger.info(f"Starting analysis for username: {username}")
         # check if analysis already exists
-        if not db.analysis_exists(username):
+        if not await db.analysis_exists(username):
             logger.info(f"No existing analysis found for username: {username}")
             # ===== begin new analysis of profile ====
-            if not db.scraping_exists(username):
+            if not await db.scraping_exists(username):
                 logger.info(f"No scraping data found for username: {username}")
                 start_time = time.time()
                 # scrape the profile on tik tok
                 scraped_info = tiktok_scraper.do_scrape(username)
                 logger.info(f"Scraping completed for username: {username}")
                 # convert the profile to our schema, and store in db
-                schema_mapper.map_profile(username, scraped_info['profile_scrape'])
+                await schema_mapper.map_profile(username, scraped_info['profile_scrape'])
                 end_time = time.time()
                 duration = end_time - start_time
                 logger.info(f"Scraping duration for username '{username}': {duration:.2f} seconds")
@@ -53,10 +53,10 @@ async def analyse_me(username: str):
             duration_analysis = end_time_analysis - start_time_analysis
             logger.info(f"Profile analysis duration for username {username}: {duration_analysis:.2f} seconds")
             # place the analysis result into db
-            db.store_analysis(username, analysis_result)
+            await db.store_analysis(username, analysis_result)
             logger.info(f"Analysis stored in DB for username: {username}")
         
-        profile = db.get_profile_by_username(username)
+        profile = await db.get_profile_by_username(username)
         return profile
 
     except Exception as e:
@@ -71,7 +71,7 @@ async def get_profiles(usernames: str = Query(...)):
         usernames_list = usernames.split(',')
         logger.info(f"Fetching profiles for usernames: {usernames_list}")
 
-        profiles = db.get_profiles_by_usernames(usernames_list)
+        profiles = await db.get_profiles_by_usernames(usernames_list)
         logger.info(f"Retrieved profiles for usernames: {usernames_list}")
 
         return profiles

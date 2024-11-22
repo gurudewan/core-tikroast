@@ -6,7 +6,7 @@ import app.json_cleaner as json_cleaner
 
 
 async def analyse(username: str) -> str:
-    profile = db.get_profile_by_username(username)  # Assuming this is an async function
+    profile = await db.get_profile_by_username(username)  # Assuming this is an async function
     # Prepare the prompt with user data
     prompt = get_full_analysis_prompt(profile)
     
