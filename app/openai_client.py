@@ -2,9 +2,9 @@ from openai import AsyncAzureOpenAI
 import sys
 import os
 import asyncio
+from app.config import consts
 # add root for importing consts:
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import app.consts as consts
 
 # Initialize the Azure OpenAI client
 client = AsyncAzureOpenAI(

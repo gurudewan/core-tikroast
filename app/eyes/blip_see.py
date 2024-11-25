@@ -1,6 +1,6 @@
 import replicate
 
-from app import consts
+from app.config import consts
 
 replicate = replicate.Client(api_token=consts.REPLICATE_API_TOKEN)
 

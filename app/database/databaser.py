@@ -1,5 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from app import consts
+from app.config import consts
 
 class Database:
     def __init__(self, uri, db_name):

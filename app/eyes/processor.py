@@ -32,7 +32,7 @@ async def caption_images(username: str) -> dict:
                     post["videoMeta"]["coverCaption"] = cover_caption
                     captions[post_id] = cover_caption
             updated_posts.append(post)
-        
+            
         # Update the user's posts with the new captions
         await db.update_user_info(username, {"posts": updated_posts})  # Assuming this is an async function
     except Exception as e:
