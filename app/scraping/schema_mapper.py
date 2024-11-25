@@ -5,7 +5,7 @@ from app.database.databaser import db
 
 from datetime import datetime
 
-def map_profile(username, raw_profile_scrape):
+async def map_profile(username, raw_profile_scrape):
     if not raw_profile_scrape or not isinstance(raw_profile_scrape, list) or not raw_profile_scrape[0]:
         raise ValueError("Invalid raw_profile_scrape data")
     try:
@@ -44,7 +44,7 @@ def map_profile(username, raw_profile_scrape):
             }
         }
 
-        db.create_new_user(user_data)
+        await db.create_new_user(user_data)
     except Exception as e:
         print(f"Error mapping profile: {e}")
 
